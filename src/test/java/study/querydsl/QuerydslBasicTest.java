@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static study.querydsl.entity.QMember.*;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,16 @@ public class QuerydslBasicTest {
             .and(member.age.eq(10)))
         .fetchOne();
     assertThat(findMember.getUsername()).isEqualTo("member1");
+  }
+
+  @Test
+  public void searchAndParam() {
+    List<Member> result1 = queryFactory
+        .selectFrom(member)
+        .where(member.username.eq("member1"),
+            member.age.eq(10))
+        .fetch();
+    assertThat(result1.size()).isEqualTo(1);
   }
 
 }
